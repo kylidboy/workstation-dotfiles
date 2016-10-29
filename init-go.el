@@ -39,6 +39,7 @@
                           (setq gofmt-command "goimports")
                           (local-set-key (kbd "M-.") 'godef-jump)
                           (add-hook 'before-save-hook 'gofmt-before-save)
+                          (add-hook 'go-mode-hook #'go-guru-hl-identifier-mode)
                           (setq flycheck-gometalinter-fast t)
                           (set (make-local-variable 'company-backends) '(company-go))
                           (company-mode)
