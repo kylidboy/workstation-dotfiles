@@ -1,0 +1,4 @@
+i3-wm.font: pango:JetBrainsMono Nerd Font 13
+i3-wm.bar.position: top
+gnome.icon.theme: Tela-circle
+i3-wm.program.launcher.app: rofi -show drun -icon-theme Tela-circle -theme $rofiTheme
