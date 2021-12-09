@@ -128,6 +128,7 @@ alias vi="nvim"
 alias v="nvim"
 alias proxy=". ~/.proxy/yes"
 alias noproxy=". ~/.proxy/no"
+alias E="emacs -nw"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
