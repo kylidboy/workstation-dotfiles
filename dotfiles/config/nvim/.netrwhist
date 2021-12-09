@@ -1,0 +1,8 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/home/kyli/.tmux/plugins/tpm'
+let g:netrw_dirhist_5='/home/kyli/.zsh-proxy'
+let g:netrw_dirhist_4='/home/kyli/.config/nvim/lua/telescope-config'
+let g:netrw_dirhist_3='/home/kyli/Codes'
+let g:netrw_dirhist_2='/home/kyli/Codes/rust/github.com/unclemine/vesting/src'
+let g:netrw_dirhist_1='/home/kyli/Codes/rust/github.com/unclemine/vesting'
