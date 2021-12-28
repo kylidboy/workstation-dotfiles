@@ -11,6 +11,7 @@
 # check the local terminfo database and use `alacritty` if it is
 # available, otherwise `xterm-256color` is used.
 #TERM: alacritty
+# TERM: xterm-256color
 window:
   # Window dimensions (changes require restart)
   #
@@ -194,7 +195,7 @@ colors:
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
-  program: /usr/bin/tmux
+  # program: /usr/bin/tmux
   #  args:
   #    - --login
   # Startup directory

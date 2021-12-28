@@ -86,7 +86,7 @@ plugins=(
 	web-search
 	sudo
 	git
-    
+
     # extra installs
 	zsh-syntax-highlighting
 	zsh-autosuggestions
@@ -123,12 +123,15 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias ls="exa"
+alias cat="bat"
 alias vim="nvim"
 alias vi="nvim"
-alias v="nvim"
+alias V="nvim"
 alias proxy=". ~/.proxy/yes"
 alias noproxy=". ~/.proxy/no"
 alias E="emacs -nw"
+alias tmux="tmux -2"
+alias T="tmux -2"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
