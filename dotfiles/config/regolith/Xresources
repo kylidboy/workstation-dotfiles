@@ -1,5 +1,0 @@
-i3-wm.font: pango:JetBrainsMono Nerd Font 13
-i3-wm.bar.position: top
-gnome.icon.theme: Tela-circle
-rofi.icon-theme: Tela-circle
-i3-wm.program.lock: alacritty -o window.startup_mode=Fullscreen -e "cmatrix"
