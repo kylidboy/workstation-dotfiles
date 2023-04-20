@@ -57,11 +57,11 @@ This function should only modify configuration layer settings."
      (lsp :variables
           lsp-rust-server 'rust-analyzer
           ;; lsp-ui-sideline-enable nil
-          cargo-process-reload-on-modity t
-          lsp-lens-enable t)
+          cargo-process-reload-on-modity t)
+
      prettier
      ;; markdown
-     multiple-cursors
+     ;; multiple-cursors
      org
      epub
      pdf
@@ -113,8 +113,15 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(catppuccin-theme modus-themes zenburn-theme dracula-theme doom-themes nord-theme
-                                                       pet)
+   dotspacemacs-additional-packages '(
+                                      catppuccin-theme
+                                      modus-themes
+                                      zenburn-theme
+                                      dracula-theme
+                                      doom-themes
+                                      nord-theme
+                                      pet
+                                      company-tabnine)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -287,7 +294,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-dark
+   dotspacemacs-themes '(catppuccin
+                         spacemacs-dark
                          spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
@@ -297,7 +305,9 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.2)
+   ;; dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1)
+   ;; dotspacemacs-mode-line-theme '(all-the-icons :separator none :separator-scale 1)
+   dotspacemacs-mode-line-theme '(vim-powerline :separator none :separator-scale 1)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -307,7 +317,7 @@ It should only modify the values of Spacemacs settings."
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
    dotspacemacs-default-font '("JetBrainsMono Nerd Font"
-                               :size 14.0
+                               :size 15.0
                                :weight normal
                                :width normal)
 
@@ -621,6 +631,9 @@ before packages are loaded."
   (setq user-full-name "Kyli Bing"
         user-mail-address "kylidboy@outlook.com")
 
+  (use-package company-tabnine :ensure t)
+  (add-to-list 'company-backends #'company-tabnine)
+
   (if (configuration-layer/layer-used-p 'python)
       (use-package pet
         :ensure-system-package (dasel sqlite3)
@@ -683,7 +696,7 @@ before packages are loaded."
     (setq interprogram-cut-function 'wl-copy)
     (setq interprogram-paste-function 'wl-paste))
 
-  (setq catppuccin-flavor 'latte))
+  (setq catppuccin-flavor 'mocha))
 
 
 (defun dotspacemacs/emacs-custom-settings ()
