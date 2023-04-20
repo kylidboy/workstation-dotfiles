@@ -121,7 +121,11 @@ This function should only modify configuration layer settings."
                                       doom-themes
                                       nord-theme
                                       pet
-                                      company-tabnine)
+                                      ;; company-tabnine
+                                      (copilot :location (recipe
+                                                          :fetcher github
+                                                          :repo "zerolfx/copilot.el"
+                                                          :files ("*.el" "dist"))))
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -631,8 +635,21 @@ before packages are loaded."
   (setq user-full-name "Kyli Bing"
         user-mail-address "kylidboy@outlook.com")
 
-  (use-package company-tabnine :ensure t)
-  (add-to-list 'company-backends #'company-tabnine)
+  ;; (use-package company-tabnine :ensure t)
+  ;; (add-to-list 'company-backends #'company-tabnine)
+
+  (with-eval-after-load 'company
+    ;; disable inline previews
+    (delq 'company-preview-if-just-one-frontend company-frontends))
+
+  (with-eval-after-load 'copilot
+    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
+
+  (add-hook 'prog-mode-hook 'copilot-mode)
+
+  (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
+  (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
 
   (if (configuration-layer/layer-used-p 'python)
       (use-package pet
