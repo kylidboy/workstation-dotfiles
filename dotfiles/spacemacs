@@ -310,8 +310,8 @@ It should only modify the values of Spacemacs settings."
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
    ;; dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1)
-   ;; dotspacemacs-mode-line-theme '(all-the-icons :separator none :separator-scale 1)
-   dotspacemacs-mode-line-theme '(vim-powerline :separator none :separator-scale 1)
+   dotspacemacs-mode-line-theme '(all-the-icons :separator none :separator-scale 1)
+   ;; dotspacemacs-mode-line-theme '(vim-powerline :separator none :separator-scale 1)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -634,6 +634,16 @@ Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (setq user-full-name "Kyli Bing"
         user-mail-address "kylidboy@outlook.com")
+  ;; Set proxy configurations in emacs
+  (setq url-proxy-services
+        '(("no_proxy" . "^\\(localhost\\|127.0.0.1\\)")
+          ("http" . "127.0.0.1:8118")
+          ("https" . "127.0.0.1:8118")))
+
+  ;; Set environment variables for shell to work
+  (setenv "no_proxy" "^\\(localhost\\|127.0.0.1\\)")
+  (setenv "http_proxy" "http://127.0.0.1:8118")
+  (setenv "https_proxy" "http://127.0.0.1:8118")
 
   ;; (use-package company-tabnine :ensure t)
   ;; (add-to-list 'company-backends #'company-tabnine)
