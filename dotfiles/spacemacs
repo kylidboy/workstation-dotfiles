@@ -42,7 +42,7 @@ This function should only modify configuration layer settings."
                       auto-completion-complete-with-key-sequence "jk"
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-return-key-behavior 'complete
-                      auto-completion-tab-key-behavior 'cycle)
+                      auto-completion-tab-key-behavior nil)
      better-defaults
      emacs-lisp
      git
@@ -88,6 +88,10 @@ This function should only modify configuration layer settings."
                         persp-autokill-buffer-on-remove 'kill-weak)
      (tree-sitter)
      systemd
+     (json :variable
+           json-backend 'lsp
+           json-fmt-tool 'prettier
+           json-fmt-on-save t)
      (solidity)
      (python :variables
              python-backend 'lsp
@@ -102,7 +106,14 @@ This function should only modify configuration layer settings."
          gofmt-command "golines"
          go-use-golangci-lint t)
      (rust :variables
-           rust-format-on-save t))
+           rust-format-on-save t)
+     (javascript :variables
+                 js-indent-level 2
+                 js2-basic-offset 2
+                 javascript-backend 'lsp
+                 javascript-lsp-linter nil
+                 javascript-fmt-tool 'prettier
+                 javascript-fmt-on-save t))
 
 
    ;; List of additional packages that will be installed without being wrapped
