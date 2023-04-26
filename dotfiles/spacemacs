@@ -132,6 +132,7 @@ This function should only modify configuration layer settings."
                                       doom-themes
                                       nord-theme
                                       pet
+                                      yul-mode
                                       ;; company-tabnine
                                       (copilot :location (recipe
                                                           :fetcher github
@@ -659,18 +660,22 @@ before packages are loaded."
   ;; (use-package company-tabnine :ensure t)
   ;; (add-to-list 'company-backends #'company-tabnine)
 
+  (setq terminal-here-linux-terminal-command 'kitty)
+
   (with-eval-after-load 'company
     ;; disable inline previews
     (delq 'company-preview-if-just-one-frontend company-frontends))
 
   (with-eval-after-load 'copilot
-    (define-key copilot-completion-map (kbd "<tab>") 'copilot-accept-completion)
-    (define-key copilot-completion-map (kbd "TAB") 'copilot-accept-completion))
+    (define-key copilot-completion-map (kbd "C-f") 'copilot-accept-completion-by-word)
+    (define-key copilot-completion-map (kbd "M-f") 'copilot-accept-completion))
 
   (add-hook 'prog-mode-hook 'copilot-mode)
 
   (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
   (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
+
+  (add-to-list 'auto-mode-alist '("\\.yul" . yul-mode))
 
   (if (configuration-layer/layer-used-p 'python)
       (use-package pet
@@ -823,6 +828,8 @@ This function is called at the very end of Spacemacs initialization."
       (tramp-connection-local-default-system-profile
        (path-separator . ":")
        (null-device . "/dev/null"))))
+  '(package-selected-packages
+    '(yul-mode which-key pcre2el hybrid-mode holy-mode evil-evilified-state dotenv-mode diminish zenburn-theme yasnippet-snippets yapfify xterm-color ws-butler writeroom-mode winum window-purpose wgrep volatile-highlights vim-powerline vi-tilde-fringe vertico uuidgen unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toml-mode toc-org terminal-here term-cursor systemd symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin space-doc solidity-flycheck smeargle shell-pop rust-mode ron-mode restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort prettier-js popwin poetry pippel pipenv pip-requirements pet pdf-view-restore password-generator parinfer-rust-mode paradox overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file nov nose nord-theme nameless mwim multi-vterm multi-term multi-line modus-themes marginalia macrostep lsp-ui lsp-python-ms lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint journalctl-mode inspector info+ indent-guide importmagic ibuffer-projectile hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link fuzzy flycheck-rust flycheck-pos-tip flycheck-package flycheck-golangci-lint flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dracula-theme doom-themes dired-quick-sort devdocs define-word dap-mode cython-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-go company-anaconda column-enforce-mode code-cells clean-aindent-mode centered-cursor-mode catppuccin-theme cargo blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ac-ispell spaceline-all-the-icons web-beautify npm-mode nodejs-repl livid-mode json-reformat json-navigator json-mode js2-refactor js-doc))
   '(warning-suppress-log-types '((lsp-mode) (comp))))
  (custom-set-faces))
   ;; custom-set-faces was added by Custom.
@@ -835,11 +842,6 @@ This function is called at the very end of Spacemacs initialization."
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
 
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-
    ;; custom-set-faces was added by Custom.
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
@@ -849,3 +851,18 @@ This function is called at the very end of Spacemacs initialization."
    ;; If you edit it by hand, you could mess it up, so be careful.
    ;; Your init file should contain only one such instance.
    ;; If there is more than one, they won't work right.
+
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+
+    ;; custom-set-faces was added by Custom.
+    ;; If you edit it by hand, you could mess it up, so be careful.
+    ;; Your init file should contain only one such instance.
+    ;; If there is more than one, they won't work right.
+
+    ;; custom-set-faces was added by Custom.
+    ;; If you edit it by hand, you could mess it up, so be careful.
+    ;; Your init file should contain only one such instance.
+    ;; If there is more than one, they won't work right.
