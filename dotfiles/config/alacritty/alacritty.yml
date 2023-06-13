@@ -3,15 +3,16 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
-#env:
-# TERM variable
-#
-# This value is used to set the `$TERM` environment variable for
-# each instance of Alacritty. If it is not present, alacritty will
-# check the local terminfo database and use `alacritty` if it is
-# available, otherwise `xterm-256color` is used.
-#TERM: alacritty
-# TERM: xterm-256color
+env:
+  # TERM variable
+  #
+  # This value is used to set the `$TERM` environment variable for
+  # each instance of Alacritty. If it is not present, alacritty will
+  # check the local terminfo database and use `alacritty` if it is
+  # available, otherwise `xterm-256color` is used.
+  # TERM: alacritty
+  TERM: xterm-256color
+  # TERM: screen-256color
 window:
   # Window dimensions (changes require restart)
   #
@@ -36,7 +37,6 @@ window:
   #  y: 0
   # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
-
   # Window decorations
   #
   # Values for `decorations`:
@@ -46,8 +46,7 @@ window:
   # Values for `decorations` (macOS only):
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
-  decorations: none
-
+  decorations: full
   # Startup Mode (changes require restart)
   #
   # Values for `startup_mode`:
@@ -57,8 +56,7 @@ window:
   #
   # Values for `startup_mode` (macOS only):
   #   - SimpleFullscreen
-  startup_mode: Windowed
-
+  startup_mode: Fullscreen
   # Window title
   title: Alacritty
   # Window class (Linux/BSD only):
@@ -79,8 +77,7 @@ window:
   # Number of lines the viewport will move for every line scrolled when
   # scrollback is enabled (history > 0).
   #multiplier: 3
-
-# Font configuration
+  # Font configuration
 font:
   # Normal (roman) font face
   normal:
@@ -91,7 +88,6 @@ font:
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
     family: FiraCode Nerd Font
-
     # The `style` can be specified to pick a specific face.
     style: Regular
     # Bold font face
@@ -121,8 +117,7 @@ font:
     # family: JetBrainsMono NF
     # The `style` can be specified to pick a specific face.
     #style: Bold Italic
-
-  # Point size
+    # Point size
   size: 15.0
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.
@@ -150,39 +145,44 @@ font:
   # This is a global setting and will require a log out or restart to take
   # effect.
   #use_thin_strokes: true
-
-# If `true`, bold text is drawn using the bright color variants.
+  # If `true`, bold text is drawn using the bright color variants.
 draw_bold_text_with_bright_colors: true
-
 # Colors (Dracula)
 colors:
   # Default colors
   primary:
-    background: '#2E3440'
-    foreground: '#D8DEE9'
+    background: "0x1E1D2F"
+    foreground: "0xD9E0EE"
+
+  cursor:
+    text: "0x1E1D2F"
+    cursor: "0xF5E0DC"
 
   # Normal colors
   normal:
-    black: '#3B4252'
-    red: '#BF616A'
-    green: '#A3BE8C'
-    yellow: '#EBCB8B'
-    blue: '#81A1C1'
-    magenta: '#B48EAD'
-    cyan: '#88C0D0'
-    white: '#E5E9F0'
+    black: "0x6E6C7E"
+    red: "0xF28FAD"
+    green: "0xABE9B3"
+    yellow: "0xFAE3B0"
+    blue: "0x96CDFB"
+    magenta: "0xF5C2E7"
+    cyan: "0x89DCEB"
+    white: "0xD9E0EE"
 
   # Bright colors
   bright:
-    black: '#4C566A'
-    red: '#BF616A'
-    green: '#A3BE8C'
-    yellow: '#EBCB8B'
-    blue: '#81A1C1'
-    magenta: '#B48EAD'
-    cyan: '#8FBCBB'
-    white: '#ECEFF4'
+    black: "0x988BA2"
+    red: "0xF28FAD"
+    green: "0xABE9B3"
+    yellow: "0xFAE3B0"
+    blue: "0x96CDFB"
+    magenta: "0xF5C2E7"
+    cyan: "0x89DCEB"
+    white: "0xD9E0EE"
 
+  indexed_colors:
+    - { index: 16, color: "0xF8BD96" }
+    - { index: 17, color: "0xF5E0DC" }
 # Live config reload (changes require restart)
 #live_config_reload: true
 # Shell
@@ -195,7 +195,7 @@ colors:
 #   - (Linux/BSD) user login shell
 #   - (Windows) powershell
 shell:
-  # program: /usr/bin/tmux
+  program: /usr/bin/tmux
   #  args:
   #    - --login
   # Startup directory
@@ -422,4 +422,4 @@ shell:
   #log_level: Warn
   # Print all received window events.
   #print_events: false
-theme: Nord
+theme: Catppuccin
