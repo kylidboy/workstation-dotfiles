@@ -39,36 +39,26 @@ This function should only modify configuration layer settings."
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      (auto-completion :variables
-                      auto-completion-complete-with-key-sequence "jk"
+                      auto-completion-use-company-posframe t
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-tab-key-behavior nil
                       auto-completion-enable-snippets-in-popup t
-                      auto-completion-return-key-behavior 'complete
-                      auto-completion-tab-key-behavior nil)
+                      auto-completion-return-key-behavior 'complete)
      better-defaults
      emacs-lisp
      git
      ;; helm
-     ;; (ivy :variables
-     ;;      ivy-wrap t
-     ;;      ivy-enable-icons t)
      compleseus
      (ibuffer :variables
               ibuffer-group-buffers-by 'projects)
-     dap
      (lsp :variables
-          lsp-rust-server 'rust-analyzer
-          ;; lsp-ui-sideline-enable nil
-          cargo-process-reload-on-modity t)
-
-     prettier
-     ;; markdown
-     ;; multiple-cursors
+          lsp-rust-server 'rust-analyzer)
+     markdown
+     multiple-cursors
      org
-     epub
-     pdf
      (shell :variables
             shell-default-shell 'vterm
             shell-default-term-shell "/bin/fish"
-            multi-term-program "/bin/fish"
             shell-default-height 30
             shell-default-position 'bottom)
      ;; spell-checking
@@ -80,40 +70,37 @@ This function should only modify configuration layer settings."
                treemacs-use-git-mode 'deferred
                treemacs-use-all-the-icons-theme t
                treemacs-lock-width t)
-     (parinfer)
-     (imenu-list)
-     (spacemacs-editing)
-     (spacemacs-layouts :variables
-                        spacemacs-layouts-restrict-spc-tab t
-                        persp-autokill-buffer-on-remove 'kill-weak)
-     (tree-sitter)
-     systemd
+     dap
+     imenu-list
+     tree-sitter
+     prettier
+     (go :variables
+         go-use-test-args "-v"
+         go-use-golangci-lint t
+         gofmt-command "goimports"
+         go-format-before-save t
+         go-tab-width 4)
      (json :variable
            json-backend 'lsp
            json-fmt-tool 'prettier
            json-fmt-on-save t)
-     (solidity)
-     (python :variables
-             python-backend 'lsp
-             python-format-on-save t
-             python-poetry-activate t
-             python-formatter 'black
-             python-sort-imports-on-save t)
-     (go :variables
-         go-backend 'lsp
-         go-tab-width 4
-         go-format-before-save t
-         gofmt-command "golines"
-         go-use-golangci-lint t)
      (rust :variables
            rust-format-on-save t)
+     (typescript :variables
+                 typescript-backend 'lsp
+                 typescript-lsp-linter nil
+                 typescript-fmt-tool 'prettier
+                 typescript-fmt-on-save t)
      (javascript :variables
                  js-indent-level 2
                  js2-basic-offset 2
                  javascript-backend 'lsp
                  javascript-lsp-linter nil
                  javascript-fmt-tool 'prettier
-                 javascript-fmt-on-save t))
+                 javascript-fmt-on-save t)
+     solidity
+     sql
+     )
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -201,7 +188,7 @@ It should only modify the values of Spacemacs settings."
    ;; This is an advanced option and should not be changed unless you suspect
    ;; performance issues due to garbage collection operations.
    ;; (default '(100000000 0.1))
-   dotspacemacs-gc-cons '(100000000 0.1)
+   dotspacemacs-gc-cons '(1000000000 0.2)
 
    ;; Set `read-process-output-max' when startup finishes.
    ;; This defines how much data is read from a foreign process.
@@ -321,9 +308,11 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   ;; dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1)
-   dotspacemacs-mode-line-theme '(all-the-icons :separator none :separator-scale 1)
+   dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1.0)
+   ;; dotspacemacs-mode-line-theme '(all-the-icons :separator none :separator-scale 1)
    ;; dotspacemacs-mode-line-theme '(vim-powerline :separator none :separator-scale 1)
+   ;; dotspacemacs-mode-line-theme '(doom :separator wave :separator-scale 1)
+   ;; dotspacemacs-mode-line-theme '(vanilla :separator nil :separator-scale 1)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -332,8 +321,8 @@ It should only modify the values of Spacemacs settings."
    ;; Default font or prioritized list of fonts. The `:size' can be specified as
    ;; a non-negative integer (pixel size), or a floating-point (point size).
    ;; Point size is recommended, because it's device independent. (default 10.0)
-   dotspacemacs-default-font '("JetBrainsMono Nerd Font"
-                               :size 15.0
+   dotspacemacs-default-font '("CaskaydiaCove Nerd Font Mono"
+                               :size 17.0
                                :weight normal
                                :width normal)
 
@@ -427,7 +416,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; If non-nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup t
+   dotspacemacs-fullscreen-at-startup nil
 
    ;; If non-nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
@@ -577,7 +566,7 @@ It should only modify the values of Spacemacs settings."
    ;; `trailing' to delete only the whitespace at end of lines, `changed' to
    ;; delete only whitespace for changed lines or `nil' to disable cleanup.
    ;; (default nil)
-   dotspacemacs-whitespace-cleanup 'all
+   dotspacemacs-whitespace-cleanup nil
 
    ;; If non-nil activate `clean-aindent-mode' which tries to correct
    ;; virtual indentation of simple modes. This can interfere with mode specific
@@ -618,24 +607,24 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (spacemacs/load-spacemacs-env))
-
+  (spacemacs/load-spacemacs-env)
+)
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
-If you are unsure, try setting them in `dotspacemacs/user-config' first.")
-
+If you are unsure, try setting them in `dotspacemacs/user-config' first."
+)
 
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump.")
-
+dump."
+)
 
 
 (defun dotspacemacs/user-config ()
@@ -667,49 +656,50 @@ before packages are loaded."
     (delq 'company-preview-if-just-one-frontend company-frontends))
 
   (with-eval-after-load 'copilot
-    (define-key copilot-completion-map (kbd "C-f") 'copilot-accept-completion-by-word)
-    (define-key copilot-completion-map (kbd "M-f") 'copilot-accept-completion))
+    (define-key copilot-completion-map (kbd "C-f") 'copilot-accept-completion)
+    (define-key copilot-completion-map (kbd "M-f") 'copilot-accept-completion-by-word))
 
   (add-hook 'prog-mode-hook 'copilot-mode)
+  (add-hook 'prog-mode-hook 'tree-sitter-mode)
 
-  (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
-  (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
+  (define-key evil-insert-state-map (kbd "C-f") 'copilot-accept-completion)
+  (define-key evil-insert-state-map (kbd "M-f") 'copilot-accept-completion-by-word)
 
   (add-to-list 'auto-mode-alist '("\\.yul" . yul-mode))
 
-  (if (configuration-layer/layer-used-p 'python)
-      (use-package pet
-        :ensure-system-package (dasel sqlite3)
-        :config
-        (add-hook 'python-mode-hook
-                  (lambda ()
-                    (setq-local python-shell-interpreter (pet-executable-find "python")
-                                python-shell-virtualenv-root (pet-virtualenv-root))
+  ;; (if (configuration-layer/layer-used-p 'python)
+  ;;     (use-package pet
+  ;;       :ensure-system-package (dasel sqlite3)
+  ;;       :config
+  ;;       (add-hook 'python-mode-hook
+  ;;                 (lambda ()
+  ;;                   (setq-local python-shell-interpreter (pet-executable-find "python")
+  ;;                               python-shell-virtualenv-root (pet-virtualenv-root))
 
-                    (pet-flycheck-setup)
-                    (flycheck-mode 1)
+  ;;                   (pet-flycheck-setup)
+  ;;                   (flycheck-mode 1)
 
-                    (setq-local lsp-jedi-executable-command
-                                (pet-executable-find "jedi-language-server"))
+  ;;                   (setq-local lsp-jedi-executable-command
+  ;;                               (pet-executable-find "jedi-language-server"))
 
-                    (setq-local lsp-pyright-python-executable-cmd python-shell-interpreter
-                                lsp-pyright-venv-path python-shell-virtualenv-root)
+  ;;                   (setq-local lsp-pyright-python-executable-cmd python-shell-interpreter
+  ;;                               lsp-pyright-venv-path python-shell-virtualenv-root)
 
-                    (lsp)
+  ;;                   (lsp)
 
-                    (setq-local dap-python-executable python-shell-interpreter)
+  ;;                   (setq-local dap-python-executable python-shell-interpreter)
 
-                    (setq-local python-pytest-executable (pet-executable-find "pytest"))
+  ;;                   (setq-local python-pytest-executable (pet-executable-find "pytest"))
 
-                    (when-let ((black-executable (pet-executable-find "black")))
-                      (setq-local python-black-command black-executable)
-                      (python-black-on-save-mode 1))
+  ;;                   (when-let ((black-executable (pet-executable-find "black")))
+  ;;                     (setq-local python-black-command black-executable)
+  ;;                     (python-black-on-save-mode 1))
 
-                    (when-let ((isort-executable (pet-executable-find "isort")))
-                      (setq-local python-isort-command isort-executable)
-                      (python-isort-on-save-mode 1))))))
+  ;;                   (when-let ((isort-executable (pet-executable-find "isort")))
+  ;;                     (setq-local python-isort-command isort-executable)
+  ;;                     (python-isort-on-save-mode 1))))))
 
-  (setq treesit-extra-load-path '("/home/kyli/.config/emacs/tree-sitter/"))
+  ;; (setq treesit-extra-load-path '("/home/kyli/.config/emacs/tree-sitter/"))
 
   (if (and (configuration-layer/layer-used-p 'lsp) (configuration-layer/layer-used-p 'solidity))
     (progn
@@ -739,130 +729,9 @@ before packages are loaded."
     (setq interprogram-cut-function 'wl-copy)
     (setq interprogram-paste-function 'wl-paste))
 
-  (setq catppuccin-flavor 'mocha))
+  (setq catppuccin-flavor 'mocha)
+)
 
 
-(defun dotspacemacs/emacs-custom-settings ()
-  "Emacs custom settings.
-This is an auto-generated function, do not modify its content directly, use
-Emacs customize menu instead.
-This function is called at the very end of Spacemacs initialization."
- (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-  '(connection-local-criteria-alist
-    '(((:application tramp)
-       tramp-connection-local-default-system-profile tramp-connection-local-default-shell-profile)))
-  '(connection-local-profile-alist
-    '((tramp-connection-local-darwin-ps-profile
-       (tramp-process-attributes-ps-args "-acxww" "-o" "pid,uid,user,gid,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state=abcde" "-o" "ppid,pgid,sess,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etime,pcpu,pmem,args")
-       (tramp-process-attributes-ps-format
-        (pid . number)
-        (euid . number)
-        (user . string)
-        (egid . number)
-        (comm . 52)
-        (state . 5)
-        (ppid . number)
-        (pgrp . number)
-        (sess . number)
-        (ttname . string)
-        (tpgid . number)
-        (minflt . number)
-        (majflt . number)
-        (time . tramp-ps-time)
-        (pri . number)
-        (nice . number)
-        (vsize . number)
-        (rss . number)
-        (etime . tramp-ps-time)
-        (pcpu . number)
-        (pmem . number)
-        (args)))
-      (tramp-connection-local-busybox-ps-profile
-       (tramp-process-attributes-ps-args "-o" "pid,user,group,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "stat=abcde" "-o" "ppid,pgid,tty,time,nice,etime,args")
-       (tramp-process-attributes-ps-format
-        (pid . number)
-        (user . string)
-        (group . string)
-        (comm . 52)
-        (state . 5)
-        (ppid . number)
-        (pgrp . number)
-        (ttname . string)
-        (time . tramp-ps-time)
-        (nice . number)
-        (etime . tramp-ps-time)
-        (args)))
-      (tramp-connection-local-bsd-ps-profile
-       (tramp-process-attributes-ps-args "-acxww" "-o" "pid,euid,user,egid,egroup,comm=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" "-o" "state,ppid,pgid,sid,tty,tpgid,minflt,majflt,time,pri,nice,vsz,rss,etimes,pcpu,pmem,args")
-       (tramp-process-attributes-ps-format
-        (pid . number)
-        (euid . number)
-        (user . string)
-        (egid . number)
-        (group . string)
-        (comm . 52)
-        (state . string)
-        (ppid . number)
-        (pgrp . number)
-        (sess . number)
-        (ttname . string)
-        (tpgid . number)
-        (minflt . number)
-        (majflt . number)
-        (time . tramp-ps-time)
-        (pri . number)
-        (nice . number)
-        (vsize . number)
-        (rss . number)
-        (etime . number)
-        (pcpu . number)
-        (pmem . number)
-        (args)))
-      (tramp-connection-local-default-shell-profile
-       (shell-file-name . "/bin/sh")
-       (shell-command-switch . "-c"))
-      (tramp-connection-local-default-system-profile
-       (path-separator . ":")
-       (null-device . "/dev/null"))))
-  '(package-selected-packages
-    '(yul-mode which-key pcre2el hybrid-mode holy-mode evil-evilified-state dotenv-mode diminish zenburn-theme yasnippet-snippets yapfify xterm-color ws-butler writeroom-mode winum window-purpose wgrep volatile-highlights vim-powerline vi-tilde-fringe vertico uuidgen unfill undo-tree treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toml-mode toc-org terminal-here term-cursor systemd symon symbol-overlay string-inflection string-edit-at-point sphinx-doc spacemacs-whitespace-cleanup spacemacs-purpose-popwin space-doc solidity-flycheck smeargle shell-pop rust-mode ron-mode restart-emacs request rainbow-delimiters quickrun pytest pylookup pyenv-mode pydoc py-isort prettier-js popwin poetry pippel pipenv pip-requirements pet pdf-view-restore password-generator parinfer-rust-mode paradox overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file nov nose nord-theme nameless mwim multi-vterm multi-term multi-line modus-themes marginalia macrostep lsp-ui lsp-python-ms lsp-pyright lsp-origami lorem-ipsum live-py-mode link-hint journalctl-mode inspector info+ indent-guide importmagic ibuffer-projectile hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link fuzzy flycheck-rust flycheck-pos-tip flycheck-package flycheck-golangci-lint flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dracula-theme doom-themes dired-quick-sort devdocs define-word dap-mode cython-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-go company-anaconda column-enforce-mode code-cells clean-aindent-mode centered-cursor-mode catppuccin-theme cargo blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ac-ispell spaceline-all-the-icons web-beautify npm-mode nodejs-repl livid-mode json-reformat json-navigator json-mode js2-refactor js-doc))
-  '(warning-suppress-log-types '((lsp-mode) (comp))))
- (custom-set-faces))
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
-
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-
-   ;; custom-set-faces was added by Custom.
-   ;; If you edit it by hand, you could mess it up, so be careful.
-   ;; Your init file should contain only one such instance.
-   ;; If there is more than one, they won't work right.
-
-    ;; custom-set-faces was added by Custom.
-    ;; If you edit it by hand, you could mess it up, so be careful.
-    ;; Your init file should contain only one such instance.
-    ;; If there is more than one, they won't work right.
-
-    ;; custom-set-faces was added by Custom.
-    ;; If you edit it by hand, you could mess it up, so be careful.
-    ;; Your init file should contain only one such instance.
-    ;; If there is more than one, they won't work right.
+;; Do not write anything past this comment. This is where Emacs will
+;; auto-generate custom variable definitions.
