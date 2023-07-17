@@ -2,6 +2,16 @@
 -- Video Tutorials: https://www.youtube.com/watch?v=sFA9kX-Ud_c&list=PLhoH5vyxr6QqGu0i7tt_XoVK9v-KvZ3m6
 -- Forum: https://www.reddit.com/r/lunarvim/
 -- Discord: https://discord.com/invite/Xb9B4Ny
+
+vim.opt.guifont = "CaskaydiaCove Nerd Font Mono:h18"
+vim.g.neovide_refresh_rate = 144  -- set the refresh rate of neovide (only works in neovide)
+vim.g.neovide_fullscreen = true   -- set neovide to fullscreen (only works in neovide)
+vim.g.neovide_confirm_quit = true -- disable the quit confirmation in neovide (only works in neovide)
+vim.g.neovide_cursor_vfx_mode = "torpedo"
+
+lvim.lsp.buffer_mappings.normal_mode["gr"] = { "<cmd>Telescope lsp_references<cr>", "LSP references" }
+lvim.builtin.which_key.mappings["lR"] = { "<cmd>Telescope lsp_references<cr>", "References" }
+
 lvim.plugins = {
   {
     "f-person/git-blame.nvim",
