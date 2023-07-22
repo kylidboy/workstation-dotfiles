@@ -100,7 +100,8 @@ input "type:keyboard" xkb_options ctrl:nocaps
     bindsym $mod+n exec swaync-client -t
 
     # Exit sway (logs you out of your Wayland session)
-    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    # bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+    bindsym $mod+Shift+e exec wlogout
 
     # bindsym XF86AudioRaiseVolume exec pulseaudio-ctl up
     # bindsym XF86AudioLowerVolume exec pulseaudio-ctl down
@@ -176,9 +177,10 @@ input "type:keyboard" xkb_options ctrl:nocaps
 
     # Make the current focus fullscreen
     bindsym $mod+f fullscreen
+    bindsym $mod+Shift+f floating toggle
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+    # bindsym $mod+Shift+space floating toggle
 
     # Swap focus between the tiling area and the floating area
     # bindsym $mod+space focus mode_toggle
@@ -238,11 +240,13 @@ bar {
     #     background #323232
     #     inactive_workspace #32323200 #32323200 #5c5c5c
     # }
+
+    # swaybar_command waybar
     swaybar_command waybar
 }
 
 include /etc/sway/config.d/*
 
-exec swaync
+exec mako
 exec albert
 exec fcitx5
