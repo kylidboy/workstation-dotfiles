@@ -61,9 +61,9 @@
 #waybar {
     background: @bg;
     color: @light;
-    font-family: Noto Sans;
-    font-size: 11px;
-    font-weight: bold;
+    font-family: FiraCode Nerd Font;
+    font-size: 13px;
+    font-weight: normal;
 }
 
 /* Each module */
@@ -78,6 +78,7 @@
 #temperature,
 #custom-alsa,
 #tray,
+#language,
 #backlight {
     padding-left: 10px;
     padding-right: 10px;
@@ -91,6 +92,10 @@
     animation-timing-function: linear;
     animation-iteration-count: infinite;
     animation-direction: alternate;
+}
+
+#battery {
+  padding-right: 20px;
 }
 
 /* Each critical module */
@@ -147,7 +152,7 @@
 	background: @workspaces;
 }
 
-#workspaces button.focused {
+#workspaces button.focused, #workspaces button.active {
     background: @workspacesfocused;
 }
 
