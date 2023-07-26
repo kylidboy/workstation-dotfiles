@@ -1,69 +1,88 @@
 @keyframes blink-warning {
-    70% {
-        color: @light;
-    }
+  70% {
+    color: @light;
+  }
 
-    to {
-        color: @light;
-        background-color: @warning;
-    }
+  to {
+    color: @light;
+    background-color: @warning;
+  }
 }
 
 @keyframes blink-critical {
-    70% {
-      color: @light;
-    }
+  70% {
+    color: @light;
+  }
 
-    to {
-        color: @light;
-        background-color: @critical;
-    }
+  to {
+    color: @light;
+    background-color: @critical;
+  }
 }
-
 
 /* -----------------------------------------------------------------------------
  * Styles
  * -------------------------------------------------------------------------- */
 
-/* COLORS */
-
 /* Nord */
-@define-color bg #353C4A;
-@define-color light #eceff4;
-@define-color dark #2e3440;
-@define-color warning #ebcb8b;
-@define-color critical #d08770;
-@define-color mode #4c566a;
+/* Polar Night */
+@define-color nord0 #2e3440;
+@define-color nord1 #3b4252;
+@define-color nord2 #434c5e;
+@define-color nord3 #4c566a;
+/* Snow Storm */
+@define-color nord4 #d8dee9;
+@define-color nord5 #e5e9f0;
+@define-color nord6 #eceff4;
+/* Frost */
+@define-color nord7 #8fbcbb;
+@define-color nord8 #88c0d0;
+@define-color nord9 #81a1c1;
+@define-color nord10 #5e81ac;
+/* Aurora */
+@define-color nord11 #bf616a;
+@define-color nord12 #d08770;
+@define-color nord13 #ebcb8b;
+@define-color nord14 #a3be8c;
+@define-color nord15 #b48ead;
+
+/* COLORS */
+@define-color bg @nord1;
+@define-color light @nord6;
+@define-color dark @nord0;
+@define-color warning @nord13;
+@define-color critical @nord11;
+@define-color mode @nord9;
 @define-color workspaces @bg;
-@define-color workspacesfocused #434C5E;
+@define-color workspacesfocused @nord3;
 @define-color tray @workspacesfocused;
-@define-color sound #46536A;
-@define-color network #5D7096;
-@define-color memory #546484;
-@define-color cpu #596A8D;
+@define-color sound @nord7;
+@define-color network @nord10;
+@define-color memory @nord14;
+@define-color cpu @nord15;
 @define-color temp #4D5C78;
 @define-color layout #5e81ac;
 @define-color battery #88c0d0;
-@define-color date #2e3440;
-@define-color time #3A4253;
-@define-color backlight #3F495D;
+@define-color date @nord0;
+@define-color time @nord0;
+@define-color backlight @nord8;
 
 /* Reset all styles */
 * {
-    border: none;
-    border-radius: 0;
-    min-height: 0;
-    margin: 0;
-    padding: 0;
+  border: none;
+  border-radius: 0;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /* The whole bar */
 #waybar {
-    background: @bg;
-    color: @light;
-    font-family: FiraCode Nerd Font;
-    font-size: 13px;
-    font-weight: normal;
+  background: @bg;
+  color: @light;
+  font-family: FiraCode Nerd Font;
+  font-size: 13px;
+  font-weight: normal;
 }
 
 /* Each module */
@@ -80,8 +99,8 @@
 #tray,
 #language,
 #backlight {
-    padding-left: 10px;
-    padding-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /* Each module that should blink */
@@ -89,9 +108,9 @@
 #memory,
 #temperature,
 #battery {
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    animation-direction: alternate;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
 #battery {
@@ -103,7 +122,7 @@
 #cpu.critical,
 #temperature.critical,
 #battery.critical {
-    color: @critical;
+  color: @critical;
 }
 
 /* Each critical that should blink */
@@ -111,8 +130,8 @@
 #memory.critical,
 #temperature.critical,
 #battery.critical.discharging {
-    animation-name: blink-critical;
-    animation-duration: 2s;
+  animation-name: blink-critical;
+  animation-duration: 2s;
 }
 
 /* Each warning */
@@ -121,99 +140,101 @@
 #cpu.warning,
 #temperature.warning,
 #battery.warning {
-    color: @warning;
+  color: @warning;
 }
 
 /* Each warning that should blink */
 #battery.warning.discharging {
-    animation-name: blink-warning;
-    animation-duration: 3s;
+  animation-name: blink-warning;
+  animation-duration: 3s;
 }
 
 /* And now modules themselves in their respective order */
 
-#mode { /* Shown current Sway mode (resize etc.) */
-	color: @light;
-	background: @mode;
+#mode {
+  /* Shown current Sway mode (resize etc.) */
+  color: @light;
+  background: @mode;
 }
 
 /* Workspaces stuff */
 
 #workspaces {
-    margin-right: 10px;
+  margin-right: 10px;
 }
-
 
 #workspaces button {
-	font-weight: bold; /* Somewhy the bar-wide setting is ignored*/
-	padding-left: 5px;
-	padding-right: 5px;
-	color: @light;
-	background: @workspaces;
+  font-weight: bold; /* Somewhy the bar-wide setting is ignored*/
+  padding-left: 5px;
+  padding-right: 5px;
+  color: @light;
+  background: @workspaces;
 }
 
-#workspaces button.focused, #workspaces button.active {
-    background: @workspacesfocused;
+#workspaces button.focused,
+#workspaces button.active {
+  background: @workspacesfocused;
 }
 
 #workspaces button.urgent {
-	border-color: #c9545d;
-	color: #c9545d;
+  border-color: #c9545d;
+  color: #c9545d;
 }
 
 #window {
-	margin-right: 40px;
-	margin-left: 40px;
+  margin-right: 40px;
+  margin-left: 40px;
 }
 
 #custom-alsa {
-	background: @sound;
+  background: @sound;
 }
 
 #network {
-    background: @network;
+  background: @network;
 }
 
 #memory {
-    background: @memory;
+  background: @memory;
 }
 
 #cpu {
-    background: @cpu;
+  background: @cpu;
 }
 
 #temperature {
-    background: @temp;
+  background: @temp;
 }
 
 #custom-layout {
-    background: @layout;
+  background: @layout;
 }
 
 #battery {
-    background: @battery;
+  background: @battery;
 }
 
 #backlight {
-	background: @backlight;
+  background: @backlight;
 }
 
 #clock.date {
-    background: @date;
+  background: @date;
 }
 
 #clock.time {
-    background: @time;
+  background: @time;
 }
 
-#pulseaudio { /* Unsused but kept for those who needs it */
-    background: @sound;
+#pulseaudio {
+  /* Unsused but kept for those who needs it */
+  background: @sound;
 }
 
 #pulseaudio.muted {
-    /* No styles */
+  /* No styles */
 }
 
 #tray {
-	background: @tray;
+  background: @tray;
 }

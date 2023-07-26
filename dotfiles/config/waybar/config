@@ -1,5 +1,5 @@
 {
-    // "layer": "top", // Waybar at top layer
+    "layer": "top", // Waybar at top layer
     // "position": "bottom", // Waybar position (top|bottom|left|right)
     "height": 30, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
@@ -9,7 +9,7 @@
     "modules-left": ["hyprland/workspaces"],
     // "modules-center": ["sway/window"],
     "modules-center": ["hyprland/window"],
-    "modules-right": ["tray", "pulseaudio", "backlight", "network", "cpu", "memory", "keyboard-state", "battery", "clock"],
+    "modules-right": ["tray", "pulseaudio", "backlight", "network", "cpu", "memory", "keyboard-state", "battery", "clock", "clock#clk2"],
     // Modules configuration
 //    "sway/workspaces": {
 //        "disable-scroll": true,
@@ -84,9 +84,13 @@
         "spacing": 10
     },
     "clock": {
-        // "timezone": "America/New_York",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+        "timezone": "Asia/Shanghai",
+        "format": "{:%H:%M} "
+    },
+    "clock#clk2": {
+        "timezone": "Asia/Shanghai",
+        "format": "{:%A, %B %d, %Y}  ",
+        // "format-alt": "{:%A, %B %d, %Y (%R)}  ",
     },
     "cpu": {
         "format": "{usage}% ",
