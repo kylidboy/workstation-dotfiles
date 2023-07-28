@@ -8,25 +8,31 @@
     // "modules-left": ["sway/workspaces", "sway/mode", "sway/scratchpad", "custom/media"],
     "modules-left": ["hyprland/workspaces"],
     // "modules-center": ["sway/window"],
-    "modules-center": ["hyprland/window"],
-    "modules-right": ["tray", "pulseaudio", "backlight", "network", "cpu", "memory", "keyboard-state", "battery", "clock", "clock#clk2"],
+    // "modules-center": ["hyprland/window"],
+    "modules-center": ["clock", "clock#clk2"],
+    "modules-right": ["tray", "pulseaudio", "backlight", "network", "cpu", "memory", "keyboard-state", "battery"],
     // Modules configuration
-//    "sway/workspaces": {
-//        "disable-scroll": true,
-//        "all-outputs": true,
-//        "warp-on-scroll": false,
-//        "format": "{name}: {icon}",
-//        "format-icons": {
-//            "1": "",
-//            "2": "",
-//            "3": "",
-//            "4": "",
-//            "5": "",
-//            "urgent": "",
-//            "focused": "",
-//            "default": ""
-//        }
-//    },
+    "hyprland/workspaces": {
+        // "disable-scroll": true,
+        // "all-outputs": true,
+        // "warp-on-scroll": false,
+        "format": "{id}: {icon}",
+        "format-icons": {
+            "1": "",
+            "2": "",
+            "3": "",
+            "4": "",
+            "5": "",
+            "6": "",
+            "7": "",
+            "8": "",
+            "9": "",
+            "10": "",
+            "urgent": "",
+            "focused": "",
+            "default": ""
+        }
+    },
     "keyboard-state": {
         "numlock": true,
         "capslock": true,
