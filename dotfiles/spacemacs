@@ -38,26 +38,28 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     (parinfer)
      (auto-completion :variables
-                      auto-completion-use-company-posframe t
+                      auto-completion-use-company-posframe nil
+                      auto-completion-use-company-box t
                       auto-completion-enable-help-tooltip t
-                      auto-completion-tab-key-behavior nil
+                      auto-completion-tab-key-behavior 'cycle
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-return-key-behavior 'complete)
      better-defaults
      emacs-lisp
      git
      ;; helm
+     ;; ivy
      compleseus
-     (ibuffer :variables
-              ibuffer-group-buffers-by 'projects)
+     (ibuffer :variables ibuffer-group-buffers-by 'projects)
      (lsp :variables
           lsp-ui-doc-enable nil
           lsp-use-ui nil
           lsp-navigation 'peek
           lsp-lens-enable t
           lsp-rust-server 'rust-analyzer)
-     markdown
+     ;; markdown
      multiple-cursors
      org
      (shell :variables
@@ -66,17 +68,9 @@ This function should only modify configuration layer settings."
             shell-default-height 30
             shell-default-position 'bottom)
      ;; spell-checking
-     (syntax-checking :variables
-                      syntax-checking-enable-tooltips nil
-                      )
-
+     syntax-checking
      ;; version-control
-     (treemacs :variables
-               treemacs-use-follow-mode t
-               treemacs-use-scope-type 'Perspectives
-               treemacs-use-git-mode 'deferred
-               treemacs-use-all-the-icons-theme t
-               treemacs-lock-width t)
+     ;; treemacs
      dap
      imenu-list
      tree-sitter
@@ -107,8 +101,7 @@ This function should only modify configuration layer settings."
                  javascript-fmt-tool 'prettier
                  javascript-fmt-on-save t)
      solidity
-     sql
-     )
+     sql)
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -120,20 +113,15 @@ This function should only modify configuration layer settings."
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages '(
-                                      catppuccin-theme
-                                      modus-themes
-                                      zenburn-theme
-                                      dracula-theme
                                       doom-themes
-                                      nord-theme
-                                      pet
                                       yul-mode
+                                      catppuccin-theme
                                       color-theme-sanityinc-tomorrow
-                                      ;; company-tabnine
                                       (copilot :location (recipe
                                                           :fetcher github
                                                           :repo "zerolfx/copilot.el"
                                                           :files ("*.el" "dist"))))
+
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -310,8 +298,7 @@ It should only modify the values of Spacemacs settings."
                          spacemacs-dark
                          spacemacs-light
                          catppuccin
-                         doom-zenburn
-                         )
+                         doom-zenburn)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -320,11 +307,11 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator nil :separator-scale 1.1)
-   ;; dotspacemacs-mode-line-theme '(all-the-icons :separator none :separator-scale 1)
-   ;; dotspacemacs-mode-line-theme '(vim-powerline :separator none :separator-scale 1)
-   ;; dotspacemacs-mode-line-theme '(doom :separator wave :separator-scale 1)
-   ;; dotspacemacs-mode-line-theme '(vanilla :separator nil :separator-scale 1)
+
+   ;; dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.5)
+   ;; dotspacemacs-mode-line-theme '(all-the-icons :separator none :separator-scale 1.5)
+   ;; dotspacemacs-mode-line-theme '(vanilla :separator none :separator-scale 1.5)
+   dotspacemacs-mode-line-theme '(doom :separator-scale 1.5)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -619,24 +606,24 @@ This function defines the environment variables for your Emacs session. By
 default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
-  (spacemacs/load-spacemacs-env)
-)
+  (spacemacs/load-spacemacs-env))
+
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
 This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
-If you are unsure, try setting them in `dotspacemacs/user-config' first."
-)
+If you are unsure, try setting them in `dotspacemacs/user-config' first.")
+
 
 
 (defun dotspacemacs/user-load ()
   "Library to load while dumping.
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
-dump."
-)
+dump.")
+
 
 
 (defun dotspacemacs/user-config ()
@@ -645,74 +632,36 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (setq catppuccin-flavor 'mocha)
+
   (setq user-full-name "Kyli Bing"
         user-mail-address "kylidboy@outlook.com")
+
   ;; Set proxy configurations in emacs
   (setq url-proxy-services
         '(("no_proxy" . "^\\(localhost\\|127.0.0.1\\)")
           ("http" . "127.0.0.1:8118")
           ("https" . "127.0.0.1:8118")))
-
   ;; Set environment variables for shell to work
   (setenv "no_proxy" "^\\(localhost\\|127.0.0.1\\)")
   (setenv "http_proxy" "http://127.0.0.1:8118")
   (setenv "https_proxy" "http://127.0.0.1:8118")
 
-  ;; (use-package company-tabnine :ensure t)
-  ;; (add-to-list 'company-backends #'company-tabnine)
+  (setq terminal-here-linux-terminal-command 'alacritty)
 
-  (setq terminal-here-linux-terminal-command 'kitty)
+  ;; (with-eval-after-load 'company
+  ;;   ;; disable inline previews
+  ;;   (delq 'company-preview-if-just-one-frontend company-frontends))
 
-  (with-eval-after-load 'company
-    ;; disable inline previews
-    (delq 'company-preview-if-just-one-frontend company-frontends))
-
+  ;; (add-hook 'prog-mode-hook 'copilot-mode)
+  (global-copilot-mode)
   (with-eval-after-load 'copilot
+    (define-key evil-insert-state-map (kbd "C-f") 'copilot-accept-completion)
+    (define-key evil-insert-state-map (kbd "M-f") 'copilot-accept-completion-by-word)
     (define-key copilot-completion-map (kbd "C-f") 'copilot-accept-completion)
     (define-key copilot-completion-map (kbd "M-f") 'copilot-accept-completion-by-word))
 
-  (add-hook 'prog-mode-hook 'lsp)
-  (add-hook 'prog-mode-hook 'copilot-mode)
-  (add-hook 'prog-mode-hook 'tree-sitter-mode)
-
-  (define-key evil-insert-state-map (kbd "C-f") 'copilot-accept-completion)
-  (define-key evil-insert-state-map (kbd "M-f") 'copilot-accept-completion-by-word)
-
   (add-to-list 'auto-mode-alist '("\\.yul" . yul-mode))
-
-  ;; (if (configuration-layer/layer-used-p 'python)
-  ;;     (use-package pet
-  ;;       :ensure-system-package (dasel sqlite3)
-  ;;       :config
-  ;;       (add-hook 'python-mode-hook
-  ;;                 (lambda ()
-  ;;                   (setq-local python-shell-interpreter (pet-executable-find "python")
-  ;;                               python-shell-virtualenv-root (pet-virtualenv-root))
-
-  ;;                   (pet-flycheck-setup)
-  ;;                   (flycheck-mode 1)
-
-  ;;                   (setq-local lsp-jedi-executable-command
-  ;;                               (pet-executable-find "jedi-language-server"))
-
-  ;;                   (setq-local lsp-pyright-python-executable-cmd python-shell-interpreter
-  ;;                               lsp-pyright-venv-path python-shell-virtualenv-root)
-
-  ;;                   (lsp)
-
-  ;;                   (setq-local dap-python-executable python-shell-interpreter)
-
-  ;;                   (setq-local python-pytest-executable (pet-executable-find "pytest"))
-
-  ;;                   (when-let ((black-executable (pet-executable-find "black")))
-  ;;                     (setq-local python-black-command black-executable)
-  ;;                     (python-black-on-save-mode 1))
-
-  ;;                   (when-let ((isort-executable (pet-executable-find "isort")))
-  ;;                     (setq-local python-isort-command isort-executable)
-  ;;                     (python-isort-on-save-mode 1))))))
-
-  ;; (setq treesit-extra-load-path '("/home/kyli/.config/emacs/tree-sitter/"))
 
   (if (and (configuration-layer/layer-used-p 'lsp) (configuration-layer/layer-used-p 'solidity))
     (progn
@@ -742,11 +691,11 @@ before packages are loaded."
     (setq interprogram-cut-function 'wl-copy)
     (setq interprogram-paste-function 'wl-paste))
 
-  (setq catppuccin-flavor 'mocha)
-  (push hl-todo-keyword-faces
-        ("ASSERT" . "#00FF00")
-        ) 
-)
+  (add-hook 'prog-mode-hook 'lsp)
+  (add-hook 'prog-mode-hook 'tree-sitter-mode)
+
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d./.cache"))))
+
 
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -756,18 +705,15 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(csv-mode zenburn-theme yul-mode yasnippet-snippets xterm-color ws-butler writeroom-mode winum window-purpose which-key wgrep web-beautify volatile-highlights vim-powerline vi-tilde-fringe vertico use-package unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil treemacs-all-the-icons tree-sitter-langs toml-mode toc-org terminal-here term-cursor symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline space-doc solidity-flycheck smeargle shell-pop rust-mode ron-mode restart-emacs request rainbow-delimiters quickrun prettier-js popwin pet pcre2el password-generator paradox overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nord-theme nodejs-repl nameless mwim multi-vterm multi-term multi-line modus-themes mmm-mode markdown-toc marginalia macrostep lsp-ui lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc inspector info+ indent-guide ibuffer-projectile hybrid-mode hungry-delete htmlize holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md fuzzy flycheck-rust flycheck-pos-tip flycheck-package flycheck-golangci-lint flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dracula-theme dotenv-mode doom-themes dired-quick-sort diminish devdocs define-word dap-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-quickhelp company-posframe company-go column-enforce-mode code-review clean-aindent-mode centered-cursor-mode catppuccin-theme cargo auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ac-ispell))
- '(warning-suppress-types '((comp))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-)
+ (custom-set-variables
+  ;; custom-set-variables was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
+  '(package-selected-packages
+    '(eglot yul-mode yasnippet-snippets xterm-color ws-butler writeroom-mode winum window-purpose which-key wgrep web-beautify volatile-highlights vim-powerline vi-tilde-fringe vertico uuidgen unfill undo-tree typescript-mode treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toml-mode toc-org terminal-here term-cursor symon symbol-overlay string-inflection string-edit-at-point sql-indent spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline-all-the-icons space-doc solidity-flycheck shell-pop rust-mode ron-mode restart-emacs request rainbow-delimiters quickrun prettier-js popwin pcre2el password-generator paradox overseer org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink orderless open-junk-file npm-mode nodejs-repl nameless mwim multi-vterm multi-term multi-line mmm-mode markdown-toc marginalia macrostep lsp-ui lsp-origami lorem-ipsum livid-mode link-hint json-reformat json-navigator json-mode js2-refactor js-doc inspector info+ indent-guide ibuffer-projectile hybrid-mode hungry-delete htmlize holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ google-translate golden-ratio godoctor go-tag go-rename go-impl go-guru go-gen-test go-fill-struct go-eldoc gnuplot gh-md fuzzy flycheck-rust flycheck-pos-tip flycheck-package flycheck-golangci-lint flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emr embark-consult elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode doom-themes dired-quick-sort diminish devdocs define-word dap-mode csv-mode copilot consult-yasnippet consult-lsp compleseus-spacemacs-help company-go column-enforce-mode color-theme-sanityinc-tomorrow clean-aindent-mode centered-cursor-mode catppuccin-theme cargo auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ac-ispell)))
+ (custom-set-faces))
+  ;; custom-set-faces was added by Custom.
+  ;; If you edit it by hand, you could mess it up, so be careful.
+  ;; Your init file should contain only one such instance.
+  ;; If there is more than one, they won't work right.
