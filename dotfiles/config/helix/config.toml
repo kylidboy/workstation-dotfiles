@@ -1,24 +1,55 @@
-theme = "catppuccin_macchiato"
+theme = "tokyonight"
 
 [editor]
-line-number = "relative"
-mouse = false
+bufferline = "multiple"
 cursorline = true
+line-number = "relative"
+# rulers = [120]
+true-color = true
+mouse = true
 color-modes = true
 
-[editor.indent-guides]
-render = true
+[editor.file-picker]
+hidden = false
+git-ignore = false
+ignore = false
 
 [editor.cursor-shape]
 insert = "bar"
 normal = "block"
 select = "underline"
 
-[editor.file-picker]
-hidden = false
+[editor.indent-guides]
+character = "╎"
+render = true
 
 [editor.lsp]
+auto-signature-help = true
 display-messages = true
+display-inlay-hints = true
+
+[editor.statusline]
+left = ["mode", "spinner", "version-control", "workspace-diagnostics"]
+center = ["file-modification-indicator", "file-name", "total-line-numbers"]
+right = ["primary-selection-length", "selections", "position", "file-encoding", "file-line-ending", "file-type"]
+separator = "│"
+mode.normal = "NORMAL"
+mode.insert = "INSERT"
+mode.select = "SELECT"
 
 [keys.normal]
-a = ["move_char_right", "insert_mode"]
+"A-," = "goto_previous_buffer"
+"A-." = "goto_next_buffer"
+"A-q" = ":buffer-close"
+"A-/" = "repeat_last_motion"
+"A-x" = "extend_to_line_bounds"
+"X" = ["extend_line_up", "extend_to_line_bounds"]
+"A-m" = ":w"
+"C-h" = "jump_view_left"
+"C-j" = "jump_view_down"
+"C-k" = "jump_view_up"
+"C-l" = "jump_view_right"
+
+[keys.select]
+"A-x" = "extend_to_line_bounds"
+"X" = ["extend_line_up", "extend_to_line_bounds"]
