@@ -42,6 +42,11 @@ enable = true
 max-wrap = 25 # increase value to reduce forced mid-word wrapping
 max-indent-retain = 0
 
+[keys.normal.space]
+"q" = ":qa"
+"f" = { "f" = "file_picker", "F" = "file_picker_in_current_directory", "s" = ":w", "H" = { "o" = ":config-open", "r" = ":config-reload" } }
+"F" = "no_op"
+  
 [keys.normal]
 "A-," = "goto_previous_buffer"
 "A-." = "goto_next_buffer"
