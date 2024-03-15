@@ -15,7 +15,7 @@
 ;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
 ;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
-;; - `doom-unicode-font' -- for unicode glyphs
+;; - `doom-symbol-font' -- for symbols
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
@@ -29,23 +29,28 @@
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
 (setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 23 :weight 'normal)
-     doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 23))
+      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 23))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-city-lights)
+(setq doom-theme 'doom-opera)
+;; (setq doom-theme 'doom-city-lights)
+;; (setq doom-theme 'doom-nord-aurora)
 ;; (setq doom-theme 'catppuccin)
 (setq catppuccin-flavor 'macchiato) ;; or 'frappe, 'latte, or 'mocha
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type nil)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
 
+(setq treesit-extra-load-path (expand-file-name "tree-sitter-langs" doom-user-dir))
+
+;; (add-to-list 'tree-sitter-load-path (expand-file-name "tree-sitter-langs" doom-private-dir))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -79,31 +84,44 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+;; accept completion from copilot and fallback to company
+;; (use-package! copilot
+;;   :hook (prog-mode . copilot-mode)
+;;   :bind (:map copilot-completion-map
+;;               ("C-]" . 'copilot-accept-completion)
+;;               ("M-]" . 'copilot-accept-completion-by-word)))
+
 (use-package! yul-mode
   :hook (yul-mode . lsp!))
 
-;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("C-]" . 'copilot-accept-completion)
-              ("M-]" . 'copilot-accept-completion-by-word)))
+;; (use-package lambda-themes
+;;   :custom
+;;   (lambda-themes-set-italic-comments t)
+;;   (lambda-themes-set-italic-keywords t)
+;;   (lambda-themes-set-variable-pitch t))
 
 ;; solidity LSP
 (after! eglot
   (add-to-list 'eglot-server-programs
                '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio"))))
 (after! lsp-mode
+  ;; https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-1709232622
+  (delete 'lsp-terraform lsp-client-packages)
+  (setq lsp-go-use-gofumpt t)
   (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
   (lsp-register-client
-    (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
-                     :activation-fn (lsp-activate-on "solidity")
-                     :priority -1
-                     :server-id 'solidity-language-server)))
+   (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
+                    :activation-fn (lsp-activate-on "solidity")
+                    :priority 1000
+                    :server-id 'solidity-language-server)))
+
 (after! solidity-mode
   (setq solidity-comment-style 'slash)
   (set-docsets! 'solidity-mode "Solidity")
-  (if (modulep! +lsp)
+  (if (modulep! :tools lsp)
       (add-hook 'solidity-mode-local-vars-hook #'lsp! 'append))
-  (if (modulep! +tree-sitter)
+  (if (modulep! :tools tree-sitter)
       (add-hook 'solidity-mode-local-vars-hook #'tree-sitter! 'append)))
+
+(setq vterm-shell "/bin/fish")
+(setq flycheck-rust-executable "rust-analyzer")
