@@ -34,10 +34,10 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-opera)
+;; (setq doom-theme 'doom-opera)
 ;; (setq doom-theme 'doom-city-lights)
 ;; (setq doom-theme 'doom-nord-aurora)
-;; (setq doom-theme 'catppuccin)
+(setq doom-theme 'catppuccin)
 (setq catppuccin-flavor 'macchiato) ;; or 'frappe, 'latte, or 'mocha
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -49,8 +49,7 @@
 (setq org-directory "~/org/")
 
 (setq treesit-extra-load-path (expand-file-name "tree-sitter-langs" doom-user-dir))
-
-;; (add-to-list 'tree-sitter-load-path (expand-file-name "tree-sitter-langs" doom-private-dir))
+;; (add-to-list 'tree-sitter-load-path (expand-file-name "tree-sitter-langs" doom-user-dir))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -122,6 +121,20 @@
       (add-hook 'solidity-mode-local-vars-hook #'lsp! 'append))
   (if (modulep! :tools tree-sitter)
       (add-hook 'solidity-mode-local-vars-hook #'tree-sitter! 'append)))
+
+(after! sql-mode
+  (if (modulep! :tools tree-sitter)
+      (add-hook 'sql-mode-hook #'tree-sitter! 'append)))
+
+(use-package! toml-mode
+  :config
+  (progn
+    (if (modulep! :tools lsp)
+        (add-hook 'toml-mode-hook #'lsp! 'append))
+    (if (modulep! :tools tree-sitter) (add-hook 'toml-mode-hook #'tree-sitter! 'append))))
+
+
+
 
 (setq vterm-shell "/bin/fish")
 (setq flycheck-rust-executable "rust-analyzer")
