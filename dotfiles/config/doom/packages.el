@@ -52,8 +52,4 @@
 (package! yul-mode)
 (package! catppuccin-theme)
 (package! toml-mode)
-;; (package! lambda-themes
-;;   :recipe (:host github :repo "lambda-emacs/lambda-themes"))
-
-;; (package! copilot
-;;   :recipe (:host github :repo "zerolfx/copilot.el" :files ("*.el" "dist")))
+(package! treesit-auto)
