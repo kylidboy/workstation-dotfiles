@@ -21,15 +21,13 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 23 :weight 'normal)
+      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 23))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
 ;; wasn't installed correctly. Font issues are rarely Doom issues!
-(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 23 :weight 'normal)
-      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 23))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -48,9 +46,12 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
+(use-package! org-modern
+  :config
+  (progn
+    (add-hook 'org-mode-hook #'org-modern-mode)
+    (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)))
 
-;; (setq treesit-extra-load-path (expand-file-name "tree-sitter-langs" doom-user-dir))
-;; (setq tree-sitter-load-path (cons (expand-file-name "tree-sitter-langs" doom-user-dir) '()))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -115,6 +116,7 @@
     (add-hook 'solidity-mode-hook #'tree-sitter! 'append)))
 
 (after! sql-mode
+  :config
   (when (modulep! :tools tree-sitter)
     (add-hook 'sql-mode-hook #'tree-sitter! 'append)))
 
@@ -144,3 +146,37 @@
 
 (setq vterm-shell "/bin/fish")
 (setq flycheck-rust-executable "rust-analyzer")
+
+;; (use-package! lsp-bridge
+;;   :config
+;;   (setq lsp-bridge-enable-log nil)
+;;   (setq lsp-bridge-inlay-hint t)
+;;   (map!
+;;    :leader (:prefix "c" (:desc "LSP:rename" "r" #'lsp-bridge-rename)
+;;                     (:desc "LSP:action" "a" #'lsp-bridge-code-action)
+;;                     (:desc "LSP:format" "F" #'lsp-bridge-code-format)))
+;;   (map! :desc "" :nv "S-k" #'lsp-bridge-popup-documentation)
+;;   (map!
+;;    :prefix "g" :desc "LSP:find def" :n "d" #'lsp-bridge-find-def
+;;    :prefix "g" :desc "LSP:find def other" :n "D" #'lsp-bridge-find-def-other-window
+;;    :prefix "g" :desc "LSP:find ref" :n "r" #'lsp-bridge-find-references
+;;    :prefix "g" :desc "LSP:peek" :n "p" #'lsp-bridge-peek
+;;    :prefix "g" :desc "LSP:find impl" :n "i" #'lsp-bridge-find-impl
+;;    :prefix "g" :desc "LSP:find impl" :n "I" #'lsp-bridge-find-impl-other-window
+;;    :prefix "g" :desc "LSP:find type def" :n "t" #'lsp-bridge-find-type-def
+;;    :prefix "g" :desc "LSP:find type def other" :n "T" #'lsp-bridge-find-type-def-other-window)
+
+;;   (map! :mode lsp-bridge-ref-mode :nv "q" #'lsp-bridge-ref-quit "RET" #'lsp-bridge-ref-open-file-and-stay "<return>" #'lsp-bridge-ref-open-file-and-stay)
+;;   (map! :mode lsp-bridge-peek-mode :nv "M-q" #'lsp-bridge-peek-abort)
+;;   (global-lsp-bridge-mode))
+
+;; (use-package! acm-terminal
+;;   :after (acm)
+;;   :if (not (display-graphic-p))
+;;   :requires (lsp-bridge))
+;;
+;; Or:
+;;
+;; (unless (display-graphic-p)
+;;   (use-package! acm-terminal
+;;     :after (acm)))
