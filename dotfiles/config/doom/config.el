@@ -85,30 +85,40 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
+(defun wake-lsp (port)
+  (list "wake" "--debug" "lsp" "--port" port))
+
 (use-package! yul-mode)
 
-(when (and (modulep! :tools lsp) (not (modulep! :tools lsp +eglot)))
-  (use-package! lsp-mode
-    :config
-    (setq lsp-headerline-breadcrumb-enable t)
-    (setq lsp-rust-all-features t)
-    (setq lsp-inlay-hint-enable t)
-    ;; https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-1709232622
-    (delete 'lsp-terraform lsp-client-packages)
-    (setq lsp-go-use-gofumpt t)
-    ;; (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity"))
-    ;; (lsp-register-client
-    ;;  (make-lsp-client :new-connection ()
-    ;;                   :activation-fn (lsp-activate-on "solidity")
-    ;;                   :priority 1001
-    ;;                   :server-id 'eth-wake-lsp))
-    ;; (lsp-register-client
-    ;;  (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
-    ;;                   :activation-fn (lsp-activate-on "solidity")
-    ;;                   :priority 1000
-    ;;                   :server-id 'solidity-language-server))
-    )
-  (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu)))
+(when (modulep! :tools lsp)
+  (if (modulep! :tools lsp +eglot)
+      (after! eglot
+        (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
+        ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
+        (add-hook 'solidity-mode-hook #'lsp!)
+        )
+    (progn
+      (use-package! lsp-mode
+        :config
+        (setq lsp-headerline-breadcrumb-enable t)
+        (setq lsp-rust-all-features t)
+        (setq lsp-inlay-hint-enable t)
+        ;; https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-1709232622
+        (delete 'lsp-terraform lsp-client-packages)
+        (setq lsp-go-use-gofumpt t)
+        ;; (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity2"))
+        ;; (lsp-register-client (make-lsp-client :new-connection (lsp-tcp-connection #'wake-lsp)
+        ;;                                       :activation-fn (lsp-activate-on "solidity" "solidity2")
+        ;;                                       :priority -2
+        ;;                                       :server-id 'wake))
+        ;; (lsp-register-client
+        ;;  (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
+        ;;                   :activation-fn (lsp-activate-on "solidity")
+        ;;                   :priority 1000
+        ;;                   :server-id 'solidity-language-server))
+        )
+      (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu))
+      )))
 
 ;; (with-eval-after-load 'eglot
 ;;   (progn
