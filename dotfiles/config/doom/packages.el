@@ -54,6 +54,7 @@
 (package! toml-mode)
 (package! treesit-auto)
 (package! org-modern)
+(package! solidity-mode)
 
 (when (package! lsp-bridge
         :recipe (:host github
