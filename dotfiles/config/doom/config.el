@@ -86,7 +86,7 @@
 ;; they are implemented.
 
 (defun wake-lsp (port)
-  (list "wake" "--debug" "lsp" "--port" port))
+  (list "wake" "lsp" "--port" port))
 
 (use-package! yul-mode)
 
@@ -95,8 +95,9 @@
       (after! eglot
         (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
         ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
+        (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))
         (add-hook 'solidity-mode-hook #'lsp!)
-        )
+        (add-hook 'toml-mode-hook #'lsp!))
     (progn
       (use-package! lsp-mode
         :config
@@ -111,11 +112,11 @@
         ;;                                       :activation-fn (lsp-activate-on "solidity" "solidity2")
         ;;                                       :priority -2
         ;;                                       :server-id 'wake))
-        ;; (lsp-register-client
-        ;;  (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
-        ;;                   :activation-fn (lsp-activate-on "solidity")
-        ;;                   :priority 1000
-        ;;                   :server-id 'solidity-language-server))
+        (lsp-register-client
+         (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
+                          :activation-fn (lsp-activate-on "solidity")
+                          :priority 1000
+                          :server-id 'nomicfoundation@solidity-language-server))
         )
       (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu))
       )))
@@ -128,23 +129,22 @@
 ;; (add-hook 'solidity-mode-hook 'eglot-ensure)
 ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
 
+(after! projectile
+  (add-to-list 'projectile-project-root-files "foundry.toml"))
 
 (use-package! solidity-mode
   :config
-  (after! projectile
-    (add-to-list 'projectile-project-root-files "foundry.toml"))
   (setq solidity-comment-style 'slash)
   (set-docsets! 'solidity-mode "Solidity")
+  ;; (set-formatter! 'prettier-solidity '("prettier" "--stdin-filepath" filepath "--plugin=prettier-plugin-solidity") :modes '(solidity-mode))
   (set-formatter! 'forge-fmt '("forge" "fmt" "-r" "-") :modes '(solidity-mode))
   (when (modulep! :tools lsp)
-    (if (modulep! :tools lsp +eglot)
-        (add-hook 'solidity-mode-hook #'eglot-ensure)
-      (add-hook 'solidity-mode-hook #'lsp!))
-    )
-  (setq-hook! 'solidity-mode-hook
-    +format-with-lsp nil)
+    (add-hook 'solidity-mode-hook #'lsp!))
   (when (modulep! :tools tree-sitter)
-    (add-hook 'solidity-mode-hook #'tree-sitter!)))
+    (add-hook 'solidity-mode-hook #'tree-sitter!))
+  ;; (after! apheleia
+  ;;   (add-to-list '+format-on-save-disabled-modes 'solidity-mode))
+  )
 
 (when (modulep! :tools tree-sitter)
   (add-hook 'sql-mode-hook #'tree-sitter! 'append))
@@ -176,6 +176,8 @@
 (setq vterm-shell "/bin/fish")
 (setq flycheck-rust-executable "rust-analyzer")
 
+;; Begin for lsp-bridge
+;;
 ;; (use-package! lsp-bridge
 ;;   :config
 ;;   (setq lsp-bridge-enable-log nil)
@@ -209,3 +211,5 @@
 ;; (unless (display-graphic-p)
 ;;   (use-package! acm-terminal
 ;;     :after (acm)))
+;;
+;; End for lsp-bridge
