@@ -85,41 +85,19 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-(defun wake-lsp (port)
-  (list "wake" "lsp" "--port" port))
-
 (use-package! yul-mode)
 
-(when (modulep! :tools lsp)
-  (if (modulep! :tools lsp +eglot)
-      (after! eglot
-        (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
-        ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
-        (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))
-        (add-hook 'solidity-mode-hook #'lsp!)
-        (add-hook 'toml-mode-hook #'lsp!))
-    (progn
-      (use-package! lsp-mode
-        :config
-        (setq lsp-headerline-breadcrumb-enable t)
-        (setq lsp-rust-all-features t)
-        (setq lsp-inlay-hint-enable t)
-        ;; https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-1709232622
-        (delete 'lsp-terraform lsp-client-packages)
-        (setq lsp-go-use-gofumpt t)
-        ;; (add-to-list 'lsp-language-id-configuration '(solidity-mode . "solidity2"))
-        ;; (lsp-register-client (make-lsp-client :new-connection (lsp-tcp-connection #'wake-lsp)
-        ;;                                       :activation-fn (lsp-activate-on "solidity" "solidity2")
-        ;;                                       :priority -2
-        ;;                                       :server-id 'wake))
-        (lsp-register-client
-         (make-lsp-client :new-connection (lsp-stdio-connection '("nomicfoundation-solidity-language-server" "--stdio"))
-                          :activation-fn (lsp-activate-on "solidity")
-                          :priority 1000
-                          :server-id 'nomicfoundation@solidity-language-server))
-        )
-      (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu))
-      )))
+(after! lsp-mode
+  ;; https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-1709232622
+  (delete 'lsp-terraform lsp-client-packages)
+  (setq lsp-headerline-breadcrumb-enable t)
+  (setq lsp-rust-all-features t)
+  (setq lsp-inlay-hint-enable t)
+  (setq lsp-go-use-gofumpt t)
+
+  (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu))
+  )
+
 
 ;; (with-eval-after-load 'eglot
 ;;   (progn
@@ -129,22 +107,8 @@
 ;; (add-hook 'solidity-mode-hook 'eglot-ensure)
 ;; (add-hook 'rustic-mode-hook 'eglot-ensure)
 
-(after! projectile
-  (add-to-list 'projectile-project-root-files "foundry.toml"))
-
-(use-package! solidity-mode
-  :config
-  (setq solidity-comment-style 'slash)
-  (set-docsets! 'solidity-mode "Solidity")
-  ;; (set-formatter! 'prettier-solidity '("prettier" "--stdin-filepath" filepath "--plugin=prettier-plugin-solidity") :modes '(solidity-mode))
-  (set-formatter! 'forge-fmt '("forge" "fmt" "-r" "-") :modes '(solidity-mode))
-  (when (modulep! :tools lsp)
-    (add-hook 'solidity-mode-hook #'lsp!))
-  (when (modulep! :tools tree-sitter)
-    (add-hook 'solidity-mode-hook #'tree-sitter!))
-  ;; (after! apheleia
-  ;;   (add-to-list '+format-on-save-disabled-modes 'solidity-mode))
-  )
+(after! lsp-mode
+  (setq lsp-log-io t))
 
 (when (modulep! :tools tree-sitter)
   (add-hook 'sql-mode-hook #'tree-sitter! 'append))
@@ -179,7 +143,10 @@
 ;; Begin for lsp-bridge
 ;;
 ;; (use-package! lsp-bridge
+;;   :init
+;;   (setq lsp-bridge-user-langserver-dir (expand-file-name "lsp-bridge-langserver" doom-user-dir))
 ;;   :config
+;;   (add-to-list 'lsp-bridge-single-lang-server-mode-list '(solidity-mode . "solidity"))
 ;;   (setq lsp-bridge-enable-log nil)
 ;;   (setq lsp-bridge-inlay-hint t)
 ;;   (map!

@@ -1,0 +1,9 @@
+{
+  "name": "solidity",
+  "languageId": "Solidity",
+  "command": [
+    "nomicfoundation-solidity-language-server",
+    "--stdio"
+  ],
+  "settings": {}
+}
