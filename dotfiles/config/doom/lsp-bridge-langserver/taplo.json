@@ -1,0 +1,6 @@
+{
+	"name": "",
+	"languageId": "toml",
+	"command": ["taplo", "lsp", "stdio"],
+	"settings": {}
+}

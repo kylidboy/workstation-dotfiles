@@ -52,6 +52,15 @@
     (add-hook 'org-mode-hook #'org-modern-mode)
     (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)))
 
+;; For javascript/typescript
+(after! typescript-mode
+  ;; (set-formatter! 'jsts-fmt '("dprint" "fmt" "--stdin") :modes '(typescript-ts-mode typescript-mode javascript-mode rjsx-mode))
+  (when (modulep! :tools lsp)
+    (add-hook 'typescript-mode-hook #'lsp! 'append)
+    (add-hook 'typescript-tsx-mode-hook #'lsp!)
+    ;; (setq-hook! 'typescript-mode +format-with-lsp nil)
+    ;; (setq-hook! 'rjsx-mode +format-with-lsp nil)
+    ))
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -95,20 +104,18 @@
   (setq lsp-inlay-hint-enable t)
   (setq lsp-go-use-gofumpt t)
 
-  (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu))
-  )
+  (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu)))
 
 
-;; (with-eval-after-load 'eglot
-;;   (progn
-;;     (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
-;;     (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))))
-;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))))
-;; (add-hook 'solidity-mode-hook 'eglot-ensure)
-;; (add-hook 'rustic-mode-hook 'eglot-ensure)
+;; (after! 'eglot
+;;   (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
+;;   (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))
+;;   ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
+;;   (add-hook 'solidity-mode-hook 'eglot-ensure)
+;;   (add-hook 'rustic-mode-hook 'eglot-ensure))
 
-(after! lsp-mode
-  (setq lsp-log-io t))
+;; (after! lsp-mode
+;;   (setq lsp-log-io t))
 
 (when (modulep! :tools tree-sitter)
   (add-hook 'sql-mode-hook #'tree-sitter! 'append))
@@ -147,12 +154,14 @@
 ;;   (setq lsp-bridge-user-langserver-dir (expand-file-name "lsp-bridge-langserver" doom-user-dir))
 ;;   :config
 ;;   (add-to-list 'lsp-bridge-single-lang-server-mode-list '(solidity-mode . "solidity"))
+;;   (add-to-list 'lsp-bridge-single-lang-server-mode-list '(toml-mode . "toml"))
 ;;   (setq lsp-bridge-enable-log nil)
 ;;   (setq lsp-bridge-inlay-hint t)
 ;;   (map!
 ;;    :leader (:prefix "c" (:desc "LSP:rename" "r" #'lsp-bridge-rename)
 ;;                     (:desc "LSP:action" "a" #'lsp-bridge-code-action)
-;;                     (:desc "LSP:format" "F" #'lsp-bridge-code-format)))
+;;                     (:desc "LSP:format" "F" #'lsp-bridge-code-format)
+;; 		    (:desc "LSP:diagnose" "d" #'lsp-bridge-diagnostic-list)))
 ;;   (map! :desc "" :nv "S-k" #'lsp-bridge-popup-documentation)
 ;;   (map!
 ;;    :prefix "g" :desc "LSP:find def" :n "d" #'lsp-bridge-find-def
@@ -166,6 +175,7 @@
 
 ;;   (map! :mode lsp-bridge-ref-mode :nv "q" #'lsp-bridge-ref-quit "RET" #'lsp-bridge-ref-open-file-and-stay "<return>" #'lsp-bridge-ref-open-file-and-stay)
 ;;   (map! :mode lsp-bridge-peek-mode :nv "M-q" #'lsp-bridge-peek-abort)
+;;   (add-hook! '(solidity-mode-hook toml-ts-mode-hook toml-mode-hook) #'lsp-bridge-mode)
 ;;   (global-lsp-bridge-mode))
 
 ;; (use-package! acm-terminal
