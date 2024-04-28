@@ -36,8 +36,9 @@
 ;; (setq doom-theme 'doom-opera)
 ;; (setq doom-theme 'doom-city-lights)
 ;; (setq doom-theme 'doom-nord-aurora)
-(setq doom-theme 'catppuccin)
-(setq catppuccin-flavor 'macchiato) ;; or 'frappe, 'latte, or 'mocha
+(setq doom-theme 'doom-wilmersdorf)
+;; (setq doom-theme 'catppuccin)
+;; (setq catppuccin-flavor 'macchiato) ;; or 'frappe, 'latte, or 'mocha
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -99,23 +100,27 @@
 (after! lsp-mode
   ;; https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-1709232622
   (delete 'lsp-terraform lsp-client-packages)
+  (setq lsp-auto-guess-root t)
   (setq lsp-headerline-breadcrumb-enable t)
   (setq lsp-rust-all-features t)
   (setq lsp-inlay-hint-enable t)
   (setq lsp-go-use-gofumpt t)
+  (setq lsp-idle-delay 0.500)
+
+  ;; (add-to-list lsp-disabled-clients '(semgrep-ls))
+  ;; (setq lsp-log-io t)
 
   (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu)))
 
 
-;; (after! 'eglot
-;;   (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
-;;   (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))
-;;   ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
-;;   (add-hook 'solidity-mode-hook 'eglot-ensure)
-;;   (add-hook 'rustic-mode-hook 'eglot-ensure))
-
-;; (after! lsp-mode
-;;   (setq lsp-log-io t))
+(after! 'eglot
+  (add-hook 'rust-mode-hook eglot-inlay-hints-mode)
+  ;;   (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
+  ;;   (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))
+  ;;   ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
+  ;;   (add-hook 'solidity-mode-hook 'eglot-ensure)
+  ;;   (add-hook 'rustic-mode-hook 'eglot-ensure)
+  )
 
 (when (modulep! :tools tree-sitter)
   (add-hook 'sql-mode-hook #'tree-sitter! 'append))
