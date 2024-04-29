@@ -20,18 +20,19 @@
   (when (and (modulep! +tree-sitter) (modulep! :tools tree-sitter))
     (add-hook 'solidity-mode-hook #'tree-sitter!)))
 
+;; The newest lsp-mode has already got Solidity covered.
+;;
 ;; (after! lsp-mode
 ;;   (lsp-register-client (make-lsp-client
-;; 		        :language-id 'solidity
-;; 		        :add-on? t
-;; 		        :new-connection (lsp-tcp-connection #'wake-lsp-command)
-;; 		        :activation-fn (lsp-activate-on "solidity" "sol")
-;; 		        :priority 1000
-;; 		        :server-id 'solidity-wake
-;; 		        :library-folders-fn (lambda (_workspace) '("/lib/" "/node_module/"))
-;; 			)))
+;;                         :language-id 'solidity
+;;                         :add-on? t
+;;                         :new-connection (lsp-tcp-connection #'wake-lsp-command)
+;;                         :activation-fn (lsp-activate-on "solidity" "sol")
+;;                         :priority 1000
+;;                         :server-id 'solidity-wake
+;;                         :library-folders-fn (lambda (_workspace) '("/lib/" "/node_module/"))
+;;                         )))
 
 (after! eglot
-  ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
-  ;; (add-hook 'solidity-mode-hook #'lsp!)
+  ;; (add-to-list 'eglot-server-programs '(solidity-mode . wake-lsp-command))
   (add-to-list 'eglot-server-programs '(solidity-mode . solidity-lsp-command)))
