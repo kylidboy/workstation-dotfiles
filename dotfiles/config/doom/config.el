@@ -21,8 +21,8 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 23 :weight 'normal)
-      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 23))
+(setq doom-font (font-spec :family "CaskaydiaCove Nerd Font Mono" :size 17 :weight 'normal)
+      doom-variable-pitch-font (font-spec :family "CaskaydiaCove Nerd Font" :size 17))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -33,10 +33,11 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 ;; (setq doom-theme 'doom-one)
-;; (setq doom-theme 'doom-opera)
+;; (setq doom-theme 'doom-gruvbox-light)
 ;; (setq doom-theme 'doom-city-lights)
 ;; (setq doom-theme 'doom-nord-aurora)
-(setq doom-theme 'doom-wilmersdorf)
+;; (setq doom-theme 'doom-wilmersdorf)
+(setq doom-theme 'doom-sourcerer)
 ;; (setq doom-theme 'catppuccin)
 ;; (setq catppuccin-flavor 'macchiato) ;; or 'frappe, 'latte, or 'mocha
 
@@ -96,12 +97,14 @@
 ;; they are implemented.
 
 (use-package! yul-mode)
+(use-package! color-theme-sanityinc-solarized)
+(use-package! color-theme-sanityinc-tomorrow)
 
 (after! lsp-mode
   ;; https://github.com/emacs-lsp/lsp-mode/issues/3577#issuecomment-1709232622
   (delete 'lsp-terraform lsp-client-packages)
   (setq lsp-auto-guess-root t)
-  (setq lsp-headerline-breadcrumb-enable t)
+  ;; (setq lsp-headerline-breadcrumb-enable t)
   (setq lsp-rust-all-features t)
   (setq lsp-inlay-hint-enable t)
   (setq lsp-go-use-gofumpt t)
@@ -113,13 +116,11 @@
   (map! :leader (:prefix "c" :desc "lsp-ui imenu" "m" #'lsp-ui-imenu)))
 
 
-(after! 'eglot
-  (add-hook 'rust-mode-hook eglot-inlay-hints-mode)
-  ;;   (add-to-list 'eglot-server-programs '(solidity-mode . ("nomicfoundation-solidity-language-server" "--stdio")))
-  ;;   (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))
-  ;;   ;; (add-to-list 'eglot-server-programs '(solidity-mode . ("wake" "--debug" "lsp" "--port" :autoport)))
-  ;;   (add-hook 'solidity-mode-hook 'eglot-ensure)
+(after! eglot
+  ;; (add-hook 'rustic-mode-hook eglot-inlay-hints-mode)
   ;;   (add-hook 'rustic-mode-hook 'eglot-ensure)
+  (add-to-list 'eglot-server-programs '(toml-mode . ("taplo" "lsp" "stdio")))
+  (add-hook 'toml-mode-hook #'eglot-ensure)
   )
 
 (when (modulep! :tools tree-sitter)
