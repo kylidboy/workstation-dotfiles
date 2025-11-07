@@ -3,7 +3,6 @@
 
 ;; To install a package with Doom you must declare them here and run 'doom sync'
 ;; on the command line, then restart Emacs for the changes to take effect -- or
-;; use 'M-x doom/reload'.
 
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
@@ -53,7 +52,20 @@
 (package! catppuccin-theme)
 (package! toml-mode)
 (package! treesit-auto)
-(package! org-modern)
+(package! mermaid-mode)
+;; (package! org-modern)
+;; (package! spacemacs-theme)
+(package! eglot-booster
+  :recipe (:host github
+           :repo "jdtsmith/eglot-booster"
+           :files ("*.el")))
+
+(package! flycheck-golangci-lint
+  :recipe (:host github
+           :repo "kylidboy/flycheck-golangci-lint"
+           :files ("*.el")))
+
+;; (package! codeium :recipe (:host github :repo "Exafunction/codeium.el"))
 
 ;; (when (package! lsp-bridge
 ;;         :recipe (:host github
@@ -63,9 +75,4 @@
 ;;                  ;; do not perform byte compilation or native compilation for lsp-bridge
 ;;                  :build (:not compile)))
 ;;   (package! markdown-mode)
-;;   (package! yasnippet)
-;;   (unless (display-graphic-p)
-;;     (package! popon
-;;       :recipe (:host nil :repo "https://codeberg.org/akib/emacs-popon.git"))
-;;     (package! acm-terminal
-;;       :recipe (:host github :repo "twlz0ne/acm-terminal"))))
+;;   (package! yasnippet))
